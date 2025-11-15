@@ -15,11 +15,40 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Seed Roles
+        $this->call(RoleSeeder::class);
+        
+        // Seed Permissions
+        $this->call(PermissionSeeder::class);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // Create Super Admin User
+        $superAdminRole = \App\Models\Role::where('slug', 'super-admin')->first();
+        
+        User::create([
+            'name' => 'Super Admin',
+            'email' => 'admin@billing.com',
+            'password' => bcrypt('password'),
+            'role_id' => $superAdminRole->id,
+        ]);
+
+        // Create Stock Manager User
+        $stockManagerRole = \App\Models\Role::where('slug', 'stock-manager')->first();
+        
+        User::create([
+            'name' => 'Stock Manager',
+            'email' => 'stock@billing.com',
+            'password' => bcrypt('password'),
+            'role_id' => $stockManagerRole->id,
+        ]);
+
+        // Create Sales Man User
+        $salesManRole = \App\Models\Role::where('slug', 'sales-man')->first();
+        
+        User::create([
+            'name' => 'Sales Man',
+            'email' => 'sales@billing.com',
+            'password' => bcrypt('password'),
+            'role_id' => $salesManRole->id,
         ]);
     }
 }
